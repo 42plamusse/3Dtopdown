@@ -90,12 +90,10 @@ public class FieldOfView : MonoBehaviour
                     EdgeInfo edge = FindEdge(oldViewCast, newViewCast);
                     if (edge.pointA != Vector3.zero)
                     {
-                        print("Adding edge");
                         viewPoints.Add(edge.pointA);
                     }
                     if (edge.pointB != Vector3.zero)
                     {
-                        print("Adding edge");
                         viewPoints.Add(edge.pointB);
                     }
                 }
