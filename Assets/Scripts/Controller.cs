@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Controller : MonoBehaviour
+public class Controller : NetworkBehaviour
 {
     public float MOVE_BASE_SPEED = 6.0f;
 
@@ -11,23 +12,32 @@ public class Controller : MonoBehaviour
     Vector3 velocity;
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        viewCamera = Camera.main;
+        if (isLocalPlayer)
+        {
+            rb = GetComponent<Rigidbody>();
+            viewCamera = Camera.main;
+        }
     }
 
     private void Update()
     {
-        Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x, Input.mousePosition.y,
-            viewCamera.transform.position.y));
-        transform.LookAt(mousePos + Vector3.up * transform.position.y);
-        velocity =
-            new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"))
-             * MOVE_BASE_SPEED;
+        if (isLocalPlayer)
+        {
+            Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(
+                Input.mousePosition.x, Input.mousePosition.y,
+                viewCamera.transform.position.y));
+            transform.LookAt(mousePos + Vector3.up * transform.position.y);
+            velocity =
+                new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"))
+                 * MOVE_BASE_SPEED;
+        }
     }
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+        if (isLocalPlayer)
+        {
+            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+        }
     }
 }
