@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class FieldOfView : MonoBehaviour
+public class FieldOfView : NetworkBehaviour
 {
     [Range(0,360)]
     public float viewAngle;
@@ -23,15 +24,21 @@ public class FieldOfView : MonoBehaviour
 
     private void Start()
     {
-        viewMesh = new Mesh();
-        viewMesh.name = "ViewMesh";
-        viewMeshFilter.mesh = viewMesh;
-        StartCoroutine(nameof(FindTargetWithDelay), 0.1f);
+        if (isLocalPlayer)
+        {
+            viewMesh = new Mesh();
+            viewMesh.name = "ViewMesh";
+            viewMeshFilter.mesh = viewMesh;
+            StartCoroutine(nameof(FindTargetWithDelay), 0.1f);
+        }
     }
 
     private void LateUpdate()
     {
-        DrawFieldOfView(); 
+        if (isLocalPlayer)
+        {
+            DrawFieldOfView(); 
+        }
     }
 
     IEnumerator FindTargetWithDelay(float delay)
@@ -40,6 +47,16 @@ public class FieldOfView : MonoBehaviour
         {
             yield return new WaitForSeconds(delay);
             FindVisibleTargets();
+        }
+    }
+
+    private void toggleTargetChildrenRenderers(Transform target, bool enabled)
+    {
+        GameObject obj = target.parent ? target.parent.gameObject : target.gameObject;
+        Renderer[] playerRenderers = obj.GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < playerRenderers.Length; i++)
+        {
+            playerRenderers[i].enabled = enabled;
         }
     }
 
@@ -58,8 +75,8 @@ public class FieldOfView : MonoBehaviour
                     break;
                 }
             }
-            if (targetHasLeftViewRadius)
-                visibleTargets[i].GetComponent<Renderer>().enabled = false;
+            if (visibleTargets[i] && targetHasLeftViewRadius)
+                toggleTargetChildrenRenderers(visibleTargets[i], false);
         }
         visibleTargets.Clear();
         for (int i = 0; i < targetsInViewRadius.Length; i++)
@@ -84,7 +101,7 @@ public class FieldOfView : MonoBehaviour
             }
             else
                 targetIsInFOV = false;
-            target.GetComponent<Renderer>().enabled = targetIsInFOV;
+            toggleTargetChildrenRenderers(target, targetIsInFOV);
         }
     }
 

@@ -268,7 +268,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9643063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -455,7 +455,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169372466}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -628,7 +628,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383162338}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -722,7 +722,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461361012}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -851,7 +851,7 @@ Transform:
   m_GameObject: {fileID: 480824704}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.1937, z: 0}
-  m_LocalScale: {x: 3.3874, y: 3.3874, z: 3.3874}
+  m_LocalScale: {x: 33.5627, y: 33.5627, z: 33.5627}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1036,7 +1036,7 @@ Camera:
   far clip plane: 1000
   field of view: 101.5
   orthographic: 1
-  orthographic size: 20.41
+  orthographic size: 16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1061,7 +1061,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 15, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000002}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1486,8 +1486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb52a2b844e55467ebcd602bf5a54757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewAngle: 152
-  viewRadius: 13.69
+  viewAngle: 220
+  viewRadius: 16
   targetMask:
     serializedVersion: 2
     m_Bits: 512
@@ -1495,8 +1495,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   visibleTargets: []
-  meshResolution: 10
+  meshResolution: 1
   viewMeshFilter: {fileID: 291323139}
+  edgeResolveIterations: 4
+  edgeDstThreshold: 0.5
 --- !u!114 &1903436092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1615,7 +1617,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2112866198}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
