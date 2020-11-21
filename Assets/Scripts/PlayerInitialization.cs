@@ -13,6 +13,11 @@ public class PlayerInitialization : NetworkBehaviour
     private void Start()
     {
         transform.name = "Player" + netId;
+        if (!isLocalPlayer)
+        {
+            // disable all renderers
+            toggleSelfChildrenRenderers(false);
+        }
     }
     public override void OnStartLocalPlayer()
     {
@@ -23,8 +28,17 @@ public class PlayerInitialization : NetworkBehaviour
         cameraFollowScript.enabled = true;
 
         // Localplayer is on Default ; Others are on Hideable
-        character.layer = 0; 
-        //fieldOfViewVisualisationMesh.enabled = true;
-        characterMesh.enabled = true;
+        character.layer = 0;
+        // enable all renderers
+        toggleSelfChildrenRenderers(true);
+    }
+
+    private void toggleSelfChildrenRenderers(bool enabled)
+    {
+        Renderer[] playerRenderers = gameObject.GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < playerRenderers.Length; i++)
+        {
+            playerRenderers[i].enabled = enabled;
+        }
     }
 }

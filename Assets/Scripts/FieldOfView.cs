@@ -50,6 +50,16 @@ public class FieldOfView : NetworkBehaviour
         }
     }
 
+    private void toggleTargetChildrenRenderers(Transform target, bool enabled)
+    {
+        GameObject obj = target.parent ? target.parent.gameObject : target.gameObject;
+        Renderer[] playerRenderers = obj.GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < playerRenderers.Length; i++)
+        {
+            playerRenderers[i].enabled = enabled;
+        }
+    }
+
     void FindVisibleTargets()
     {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position,
@@ -66,7 +76,7 @@ public class FieldOfView : NetworkBehaviour
                 }
             }
             if (visibleTargets[i] && targetHasLeftViewRadius)
-                visibleTargets[i].GetComponent<Renderer>().enabled = false;
+                toggleTargetChildrenRenderers(visibleTargets[i], false);
         }
         visibleTargets.Clear();
         for (int i = 0; i < targetsInViewRadius.Length; i++)
@@ -91,7 +101,7 @@ public class FieldOfView : NetworkBehaviour
             }
             else
                 targetIsInFOV = false;
-            target.GetComponent<Renderer>().enabled = targetIsInFOV;
+            toggleTargetChildrenRenderers(target, targetIsInFOV);
         }
     }
 
