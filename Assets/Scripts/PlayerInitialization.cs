@@ -17,12 +17,12 @@ public class PlayerInitialization : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        //CameraFollow cameraFollowScript =
-        //    Camera.main.GetComponent<CameraFollow>();
-        //cameraFollowScript.target = transform; //Fix camera on "me"
-        //cameraFollowScript.enabled = true;
+        CameraFollow cameraFollowScript =
+            Camera.main.GetComponent<CameraFollow>();
+        cameraFollowScript.target = transform; //Fix camera on "me"
+        cameraFollowScript.enabled = true;
 
-        // Localplayer is on Default ; Others are on Targets
+        // Localplayer is on Default ; Others are on Hideable
         character.layer = 0; 
         //fieldOfViewVisualisationMesh.enabled = true;
         characterMesh.enabled = true;

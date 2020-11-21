@@ -65,7 +65,7 @@ public class FieldOfView : NetworkBehaviour
                     break;
                 }
             }
-            if (targetHasLeftViewRadius)
+            if (visibleTargets[i] && targetHasLeftViewRadius)
                 visibleTargets[i].GetComponent<Renderer>().enabled = false;
         }
         visibleTargets.Clear();
