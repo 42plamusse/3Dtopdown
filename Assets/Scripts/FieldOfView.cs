@@ -26,8 +26,7 @@ public class FieldOfView : MonoBehaviour
         viewMesh = new Mesh();
         viewMesh.name = "ViewMesh";
         viewMeshFilter.mesh = viewMesh;
-
-        StartCoroutine(nameof(FindTargetWithDelay), 0.2f);
+        StartCoroutine(nameof(FindTargetWithDelay), 0.1f);
     }
 
     private void LateUpdate()
@@ -46,14 +45,29 @@ public class FieldOfView : MonoBehaviour
 
     void FindVisibleTargets()
     {
-        visibleTargets.Clear();
-        Collider[] targetInViewRadius = Physics.OverlapSphere(transform.position,
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position,
             viewRadius, targetMask);
-        for (int i = 0; i < targetInViewRadius.Length; i++)
+        for (int i = 0; i < visibleTargets.Count; i++)
         {
-            Transform target = targetInViewRadius[i].transform;
+            bool targetHasLeftViewRadius = true;
+            for (int j = 0; j < targetsInViewRadius.Length; j++)
+            {
+                if (visibleTargets[i] == targetsInViewRadius[j].transform)
+                {
+                    targetHasLeftViewRadius = false;
+                    break;
+                }
+            }
+            if (targetHasLeftViewRadius)
+                visibleTargets[i].GetComponent<Renderer>().enabled = false;
+        }
+        visibleTargets.Clear();
+        for (int i = 0; i < targetsInViewRadius.Length; i++)
+        {
+            Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position)
                 .normalized;
+            bool targetIsInFOV = false;
             if(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
                 float dstToTarget = Vector3.Distance(transform.position,
@@ -61,9 +75,16 @@ public class FieldOfView : MonoBehaviour
                 if(!Physics.Raycast(transform.position, dirToTarget, dstToTarget,
                     obstacleMask))
                 {
+                    targetIsInFOV = true;
                     visibleTargets.Add(target);
                 }
+                else
+                    targetIsInFOV = false;
+
             }
+            else
+                targetIsInFOV = false;
+            target.GetComponent<Renderer>().enabled = targetIsInFOV;
         }
     }
 
@@ -75,7 +96,7 @@ public class FieldOfView : MonoBehaviour
         List<Vector3> viewPoints = new List<Vector3>();
         ViewCastInfo oldViewCast = new ViewCastInfo();
 
-        for (int i = 0; i < stepCount + 1; i++)
+        for (int i = 0; i <= stepCount; i++)
         {
             float angle = transform.eulerAngles.y - viewAngle / 2 + stepAngleSize * i;
             ViewCastInfo newViewCast = ViewCast(angle);
